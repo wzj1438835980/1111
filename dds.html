@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>初始UI</title>
+    <style>
+        body {
+            background-color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        button {
+            width: 250px;
+            height: 80px;
+            font-size: 24px;
+            background-color: #1E90FF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            transform: scale(1);
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #104E8B;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background-color: #4169E1;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="goToCalculator()">进入计算器</button>
+    <button onclick="goTo24PointCalculator()">进入24点计算器</button>
+    <button onclick="goToPokerGame()">进入扑克牌游戏</button>
+
+    <script>
+        function goToCalculator() {
+            window.location.href = 'calculator.html';
+        }
+
+        function goTo24PointCalculator() {
+            window.location.href = '24point.html';
+        }
+
+        function goToPokerGame() {
+            window.location.href = 'pokergame.html';
+        }
+    </script>
+</body>
+</html>

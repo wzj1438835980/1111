@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>扑克牌记牌器</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        .select-card {
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .card-button {
+            cursor: pointer;
+            padding: 5px;
+            background-color: #1E90FF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>扑克牌游戏</h1>
+    <div>
+        <h2>已出的牌：</h2>
+        <div id="dealt-cards"></div>
+    </div>
+    <div>
+        <h2>未出的牌：</h2>
+        <div id="remaining-cards"></div>
+    </div>
+
+    <script>
+        // 初始化一副扑克牌（包括大小王）
+        const suits = ["方块", "梅花", "红桃", "黑桃"];
+        const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+        const jokers = ["Joker1", "Joker2"];
+        const deck = [];
+
+        for (const suit of suits) {
+            for (const rank of ranks) {
+                deck.push(rank + " " + suit);
+            }
+        }
+
+        for (const joker of jokers) {
+            deck.push(joker);
+        }
+
+        const dealtCards = [];
+        const remainingCards = [...deck];
+
+        function updateCardLists() {
+            document.getElementById("dealt-cards").innerHTML = dealtCards.join(", ");
+            document.getElementById("remaining-cards").innerHTML = remainingCards.join(", ");
+        }
+
+        function playCard(cards) {
+            for (const card of cards) {
+                dealtCards.push(card);
+                const index = remainingCards.indexOf(card);
+                if (index !== -1) {
+                    remainingCards.splice(index, 1);
+                }
+            }
+            updateCardLists();
+        }
+
+        updateCardLists();
+
+        const buttonContainer = document.getElementById("remaining-cards");
+
+        function createCardButton() {
+            if (remainingCards.length > 0) {
+                const cardSelect = document.createElement("select");
+                cardSelect.multiple = "multiple";
+
+                for (let i = 0; i < remainingCards.length; i++) {
+                    const option = document.createElement("option");
+                    option.value = i;
+                    option.text = remainingCards[i];
+                    cardSelect.appendChild(option);
+                }
+
+                const cardButton = document.createElement("button");
+                cardButton.className = "card-button";
+                cardButton.textContent = "出牌";
+                cardButton.onclick = function() {
+                    const selectedOptions = cardSelect.selectedOptions;
+                    const selectedCards = Array.from(selectedOptions).map(option => remainingCards[option.value]);
+                    playCard(selectedCards);
+                    // Remove the selected cards from the list
+                    for (const option of selectedOptions) {
+                        cardSelect.remove(option);
+                    }
+                    createCardButton();
+                };
+
+                buttonContainer.appendChild(cardSelect);
+                buttonContainer.appendChild(cardButton);
+            }
+        }
+
+        createCardButton();
+    </script>
+</body>
+</html>
