@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>扑克牌记牌器</title>
+    <title>扑克牌游戏</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
+            background-image: url('ccc.jpg'); /* 添加背景图片 */
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #080000; /* 修改文字颜色为白色 */
         }
 
         .select-card {
@@ -21,6 +25,15 @@
             border: none;
             border-radius: 5px;
             margin: 5px;
+        }
+
+        /* 修改按钮背景颜色和悬停效果 */
+        .card-button:hover {
+            background-color: #104E8B;
+        }
+
+        .card-button:active {
+            background-color: #4169E1;
         }
     </style>
 </head>
