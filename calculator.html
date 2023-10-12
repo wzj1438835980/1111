@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>科学计算器</title>
+    <style>
+             body {
+            background-color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #calculator {
+            background-color: #444;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            padding: 20px;
+        }
+
+        #display {
+            width: 100%;
+            height: 40px;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            height: 80px;
+            font-size: 20px;
+            background-color: #1E90FF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            transform: scale(1);
+        }
+
+        button:hover {
+            background-color: #104E8B;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background-color: #4169E1;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="display" readonly>
+        <div class="button-container">
+                <!-- 加减乘除按钮 -->
+        <button onclick="appendToDisplay('+')">+</button>
+        <button onclick="appendToDisplay('-')">-</button>
+        <button onclick="appendToDisplay('*')">*</button>
+        <button onclick="appendToDisplay('/')">/</button>
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('Math.log(')">log</button>
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('Math.sin(')">sin</button>  
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('Math.cos(')">cos</button>
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('Math.exp(')">e^</button>
+        <!-- 数字按钮789-->
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <!-- 括号按钮 -->
+        <button onclick="handleParentheses()">( )</button>
+        <!-- 数字按钮456-->
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <!-- 平方根按钮 -->
+        <button onclick="appendToDisplay('Math.sqrt(')">√</button>
+        <!--数字按钮123 -->  
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>  
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('Math.pow(')">^</button>
+        <!-- 计算结果按钮 -->
+        <button onclick="calculateResult()">=</button>        
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+        <!-- 其他函数按钮 -->
+        <button onclick="appendToDisplay('1/x')">1/x</button>
+        <!-- 删除按钮 -->
+        <button onclick="deleteLastInput()">del</button>
+        <!-- 清空按钮 -->
+        <button onclick="clearDisplay()">C</button>  
+        </div>
+    </div>
+</body>
+<script>
+    const display = document.getElementById('display');
+
+    function appendToDisplay(value) {
+        if (value === '1/x') {
+            display.value += '1/(';
+        } else {
+            display.value += value;
+        }
+    }
+
+    function clearDisplay() {
+        display.value = '';
+    }
+
+    function calculateResult() {
+        try {
+            const expression = display.value.replace('e^', 'Math.exp');
+            const result = eval(expression);
+            display.value = result;
+        } catch (error) {
+            display.value = '错误';
+        }
+    }
+
+    function deleteLastInput() {
+        const currentText = display.value;
+        display.value = currentText.slice(0, -1);
+    }
+
+    // 处理括号的函数
+    function handleParentheses() {
+        const currentText = display.value;
+
+        // 计算开括号和闭括号的数量
+        const openParenCount = (currentText.match(/\(/g) || []).length;
+        const closeParenCount = (currentText.match(/\)/g) || []).length;
+
+        // 决定是添加开括号还是闭括号
+        if (openParenCount === closeParenCount || currentText.endsWith('(')) {
+            appendToDisplay('(');
+        } else if (openParenCount > closeParenCount) {
+            appendToDisplay(')');
+        }
+    }
+
+    // 捕获键盘按键事件
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+    
+    if (key.match(/[0-9+\-*/()^e.]/)) {
+        event.preventDefault(); // 阻止默认按键行为
+        appendToDisplay(key);
+    } else if (key === 'Enter') {
+        event.preventDefault(); // 阻止默认按键行为
+        calculateResult();
+    } else if (key === 'c' || key === 'C') {
+        event.preventDefault(); // 阻止默认按键行为
+        clearDisplay();
+    } else if (key === 'Backspace') {
+        event.preventDefault(); // 阻止默认按键行为
+        deleteLastInput();
+    }
+});
+
+</script>
